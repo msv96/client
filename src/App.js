@@ -1,11 +1,30 @@
-import React from 'react';
+import axios from "axios";
+import React, { useEffect, useState } from "react";
 
 function App() {
-  return (
-    <div>
-      <h1>welcome to react app</h1>
-    </div>
-  );
+	const [data, setData] = useState([]);
+
+	useEffect(() => {
+		let fetchdata = async () => {
+			try {
+				let todos = await axios.get("http://localhost:3000/todolist");
+				setData([...todos.data]);
+			} catch (error) {
+				console.log(error);
+			}
+		};
+		fetchdata();
+	}, []);
+
+	return (
+		<div>
+			<ul>
+				{data.map((e) => (
+					<li key={e.id}>{e.message}</li>
+				))}
+			</ul>
+		</div>
+	);
 }
 
 export default App;
